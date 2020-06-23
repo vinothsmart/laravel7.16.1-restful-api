@@ -20,6 +20,12 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->string('image');
+            $table->string('verified')->default(App\User::UNVERIFIED_USER);
+            $table->string('verification_token')->nullable();
+            $table->string('admin')->default(App\User::REGULAR_USER);
+            $table->string('client_details')->nullable();
+            $table->softDeletes(); //deleted_at
             $table->timestamps();
         });
     }
