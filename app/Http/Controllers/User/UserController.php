@@ -150,7 +150,7 @@ class UserController extends ApiController
         if ($request->has('role_id'))
         {
             $userRoleAssign = ['role_id' => $request->role_id, ];
-            DB::table('role_user')
+            DB::table('roles_users')
                 ->where('user_id', $user->id)
                 ->update($userRoleAssign);
         }
