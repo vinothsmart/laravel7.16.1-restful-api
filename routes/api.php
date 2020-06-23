@@ -14,12 +14,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 /**
 * Roles
 */
 
 Route::resource('roles', 'Role\RoleController', ['except' => ['create', 'edit']]);
+
+Route::name('rolesList')->get('rolesList', 'Role\RoleController@list'); 
+
+/**
+* Users
+*/
+
+Route::resource('users', 'User\UserController',['except' => ['create', 'edit']]);

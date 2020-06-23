@@ -17,6 +17,15 @@ class Role extends Model
      * @var array
      */
     protected $fillable = [
-        'role', 'client_details'
+        'role', 
+    ];
+
+        /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'client_details'
     ];
 }

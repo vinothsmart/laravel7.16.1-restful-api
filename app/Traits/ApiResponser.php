@@ -25,4 +25,9 @@ trait ApiResponser
     {
         return $this->successResponse(['data' => $model], $code);
     }
+
+    protected function showList(Collection $collection, $code = 200)
+    {
+        return $this->successResponse(['data' => $collection], $code);
+    }
 } 
