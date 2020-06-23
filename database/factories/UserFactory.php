@@ -2,9 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Role;
 use App\User;
-use Faker\Generator as Faker;
 use Illuminate\Support\Str;
+use Faker\Generator as Faker;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,4 +30,45 @@ $factory->define(User::class, function (Faker $faker) {
         'verification_token' => null,
         'admin' => User::REGULAR_USER,
     ];
+});
+
+$factory->afterCreating(User::class, function ($user, $faker) {
+    /**
+     * Role assign for user
+     */
+    if($user->id <= 1){
+        $userRoleAssign = [
+            'role_id' => 1,
+            'user_id' => $user->id,
+        ];
+    } else {
+        $userRoleAssign = [
+            'role_id' => Role::where('id', '>', 1)->get()->random()->id,
+            'user_id' => $user->id,
+        ];
+    }
+    DB::table('roles_users')->insert($userRoleAssign);
+
+    /**
+     * Getting role information for user
+     */
+    $role = DB::table('roles_users')->where('user_id', $user->id)->first();
+
+    /**
+     * Updating User details based on role
+     */
+    $roleId = $role->role_id;
+
+    if($roleId == 1 || $roleId == 2) {
+        $isAdmin = true;
+    } else {
+        $isAdmin = false;
+    }
+
+    $updateUser = User::findOrFail($user->id);
+    $updateUser->email_verified_at =  $isAdmin == true ? now() : null;
+    $updateUser->verified = $isAdmin == true ? User::VERIFIED_USER : User::UNVERIFIED_USER;
+    $updateUser->verification_token = $isAdmin == true ? null : User::generateVerificationCode();
+    $updateUser->admin = $isAdmin == true ? User::ADMIN_USER : User::REGULAR_USER;
+    $updateUser->save();
 });
