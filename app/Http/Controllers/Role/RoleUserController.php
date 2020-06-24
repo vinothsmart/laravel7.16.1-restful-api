@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Role;
 
-use App\Http\Controllers\ApiController;
+use App\Http\Controllers\Controller;
 use App\Role;
 use Illuminate\Http\Request;
 
-class RoleController extends ApiController
+class RoleUserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,20 +15,17 @@ class RoleController extends ApiController
      */
     public function index()
     {
-        $roles = Role::all();
-
-        return $this->showAll($roles);
+        //
     }
 
     /**
-     * Display a listing of the resource.
+     * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    function list() {
-        $roles = Role::select('id', 'role')->get();
-
-        return $this->showList($roles);
+    public function create()
+    {
+        //
     }
 
     /**
@@ -50,17 +47,28 @@ class RoleController extends ApiController
      */
     public function show(Role $role)
     {
-        return $this->showOne($role);
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Role  $role
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Role $role)
+    {
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Role $role)
     {
         //
     }
@@ -68,10 +76,10 @@ class RoleController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Role $role)
     {
         //
     }
