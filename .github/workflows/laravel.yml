@@ -30,15 +30,3 @@ jobs:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: vendor/bin/phpunit
-    - name: Generate Migration
-      run: php artisan migrate  
-    - name: Generate Seeders
-      run: php artisan db:seed
-    # - name: Get deployment URL
-    #   id: deployment
-    #   uses: dorshinar/get-deployment-url@v1.0.0
-    #   timeout-minutes: 5
-    # - name: Run end-to-end tests
-    #   run: npm run test:e2e
-    #   env:
-    #     deployment: ${{ steps.deployment.outputs.deployment }}
