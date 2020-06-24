@@ -30,3 +30,7 @@ jobs:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: vendor/bin/phpunit
+    - name: Get deployment URL
+      id: deployment
+      uses: vinothsmart/laravel7.16.1-restful-api@deployment 
+      timeout-minutes: 5 
