@@ -17,10 +17,10 @@ class Role extends Model
      * @var array
      */
     protected $fillable = [
-        'role', 
+        'role',
     ];
 
-        /**
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
@@ -28,4 +28,12 @@ class Role extends Model
     protected $hidden = [
         'client_details'
     ];
+
+    /**
+     * The users that belong to the role.
+     */
+    public function users()
+    {
+        return $this->belongsToMany('App\User');
+    }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Role;
 
+use App\Http\Controllers\ApiController;
 use App\Role;
 use Illuminate\Http\Request;
-use App\Http\Controllers\ApiController;
 
 class RoleController extends ApiController
 {
@@ -15,7 +15,7 @@ class RoleController extends ApiController
      */
     public function index()
     {
-        $roles = Role::all();
+        $roles = Role::has('users')->get();
 
         return $this->showAll($roles);
     }
@@ -25,8 +25,7 @@ class RoleController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function list()
-    {
+    function list() {
         $roles = Role::select('id', 'role')->get();
 
         return $this->showList($roles);

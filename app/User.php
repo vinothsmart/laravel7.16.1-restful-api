@@ -2,11 +2,10 @@
 
 namespace App;
 
-use Illuminate\Support\Str;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -26,7 +25,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'verified', 'verification_token', 'admin', 'image', 'client_details'
+        'name', 'email', 'password', 'verified', 'verification_token', 'admin', 'image', 'client_details',
     ];
 
     /**
@@ -35,7 +34,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'pivot'
+        'password', 'remember_token', 'pivot',
         //  'verification_token'
     ];
 
@@ -47,16 +46,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    
-    public function setNameAttribute($name) {
+
+    public function setNameAttribute($name)
+    {
         $this->attributes['name'] = strtolower($name);
     }
- 
-    public function getNameAttribute($name) {
+
+    public function getNameAttribute($name)
+    {
         return ucwords($name);
     }
- 
-    public function setEmailAttribute($email) {
+
+    public function setEmailAttribute($email)
+    {
         $this->attributes['email'] = strtolower($email);
     }
 
@@ -73,5 +75,13 @@ class User extends Authenticatable
     public static function generateVerificationCode()
     {
         return Str::random(40);
+    }
+
+    /**
+     * The roles that belong to the user.
+     */
+    public function roles()
+    {
+        return $this->belongsToMany('App\Role');
     }
 }
