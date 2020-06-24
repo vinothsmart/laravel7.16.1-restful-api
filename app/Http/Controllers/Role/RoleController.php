@@ -71,12 +71,32 @@ class RoleController extends ApiController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Role $role)
     {
-        //
+        // Validation
+        $rules = [
+            'role' => 'required',
+        ];
+
+        $this->validate($request, $rules);
+
+        if ($request->has('role')) {
+            $role->role = $request->role;
+        }
+
+        if (!$role->isDirty()) {
+            return $this->errorResponse('You need to specify a different value to update', 422);
+        }
+
+        // $role->client_details = $this->applicationDetector();
+        $role->client_details = null;
+
+        $role->save();
+
+        return $this->showOne($role);
     }
 
     /**
