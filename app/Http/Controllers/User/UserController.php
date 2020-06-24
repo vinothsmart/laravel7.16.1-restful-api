@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\ApiController;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\ApiController;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends ApiController
@@ -31,11 +31,11 @@ class UserController extends ApiController
     {
         // Validation
         $rules = [
-            'name' => 'required', 
-            'email' => 'required|email|unique:users', 
-            'password' => 'required|min:6|confirmed', 
-            'role_id' => 'required', 
-            'image' => 'required'
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6|confirmed',
+            'role_id' => 'required',
+            'image' => 'required',
         ];
 
         $this->validate($request, $rules);
@@ -45,12 +45,9 @@ class UserController extends ApiController
         // Role based cond
         $roleId = $request->role_id;
 
-        if ($roleId == 1 || $roleId == 2)
-        {
+        if ($roleId == 1 || $roleId == 2) {
             $isAdmin = true;
-        }
-        else
-        {
+        } else {
             $isAdmin = false;
         }
         $data['password'] = bcrypt($request->password);
@@ -68,7 +65,7 @@ class UserController extends ApiController
         // Adding to Pivot Table
         $userRoleAssign = ['role_id' => $request->role_id, 'user_id' => $user->id];
 
-        DB::table('roles_users')
+        DB::table('role_user')
             ->insert($userRoleAssign);
 
         $user->roles;
@@ -97,67 +94,56 @@ class UserController extends ApiController
     public function update(Request $request, User $user)
     {
         // Validation
-        $rules = ['email' => 'email|unique:users,email,' . $user->id, 'password' => 'min:6|confirmed', 'admin' => 'in:' . User::ADMIN_USER . ',' . User::REGULAR_USER, ];
+        $rules = ['email' => 'email|unique:users,email,' . $user->id, 'password' => 'min:6|confirmed', 'admin' => 'in:' . User::ADMIN_USER . ',' . User::REGULAR_USER];
 
         $this->validate($request, $rules);
 
         // Role based cond
         $roleId = $request->role_id;
 
-        if ($roleId == 1 || $roleId == 2)
-        {
+        if ($roleId == 1 || $roleId == 2) {
             $isAdmin = true;
-        }
-        else
-        {
+        } else {
             $isAdmin = false;
         }
 
-        if ($request->has('name'))
-        {
+        if ($request->has('name')) {
             $user->name = $request->name;
         }
 
-        if ($request->has('email') && $user->email != $request->email)
-        {
+        if ($request->has('email') && $user->email != $request->email) {
             $user->verified = $isAdmin == true ? User::VERIFIED_USER : User::UNVERIFIED_USER;
             $user->verification_token = $isAdmin == true ? null : User::generateVerificationCode();
             $user->email = $request->email;
         }
 
-        if ($request->has('password'))
-        {
+        if ($request->has('password')) {
             $user->password = bcrypt($request->password);
         }
 
-        if ($request->hasFile('image'))
-        {
+        if ($request->hasFile('image')) {
             // Delete old image
             Storage::delete($user->image);
             $user->image = $request->file('image')
                 ->store('');
         }
 
-        if ($request->has('admin'))
-        {
-            if (!$user->isAdmin())
-            {
+        if ($request->has('admin')) {
+            if (!$user->isAdmin()) {
                 return $this->errorResponse('Only Admin users can modify the admin field', 409);
             }
             $user->admin = $isAdmin == true ? $request->admin : User::REGULAR_USER;
         }
 
         // Update role
-        if ($request->has('role_id'))
-        {
-            $userRoleAssign = ['role_id' => $request->role_id, ];
-            DB::table('roles_users')
+        if ($request->has('role_id')) {
+            $userRoleAssign = ['role_id' => $request->role_id];
+            DB::table('role_user')
                 ->where('user_id', $user->id)
                 ->update($userRoleAssign);
         }
 
-        if (!$user->isDirty())
-        {
+        if (!$user->isDirty()) {
             return $this->errorResponse('You need to specify a different value to update', 422);
         }
 
@@ -184,7 +170,7 @@ class UserController extends ApiController
         // Delete image
         Storage::delete($user->image);
         // Delete Role
-        DB::table('roles_users')
+        DB::table('role_user')
             ->where('user_id', $user->id)
             ->delete();
         return $this->showOne($user);
