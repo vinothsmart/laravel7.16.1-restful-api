@@ -15,7 +15,7 @@ class RoleController extends ApiController
      */
     public function index()
     {
-        $roles = Role::has('users')->get();
+        $roles = Role::all();
 
         return $this->showAll($roles);
     }
@@ -45,12 +45,12 @@ class RoleController extends ApiController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Role $role)
     {
-        //
+        return $this->showOne($role);
     }
 
     /**
