@@ -179,6 +179,13 @@ class UserController extends ApiController
      */
     public function destroy($id)
     {
-        //
+        $user->delete();
+        // Delete image
+        Storage::delete($user->image);
+        // Delete Role
+        DB::table('roles_users')
+            ->where('user_id', $user->id)
+            ->delete();
+        return $this->showOne($user);
     }
 }
