@@ -17,7 +17,7 @@ class Role extends Model
      * @var array
      */
     protected $fillable = [
-        'role',
+        'role', 'client_details',
     ];
 
     /**
@@ -26,7 +26,7 @@ class Role extends Model
      * @var array
      */
     protected $hidden = [
-        'client_details'
+        'pivot',
     ];
 
     /**
