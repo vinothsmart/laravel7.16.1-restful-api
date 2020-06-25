@@ -4,7 +4,7 @@ namespace App\Traits;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
-trait ApiResponser 
+trait ApiResponser
 {
     private function successResponse($data, $code)
     {
@@ -30,4 +30,9 @@ trait ApiResponser
     {
         return $this->successResponse(['data' => $collection], $code);
     }
-} 
+
+    protected function showMessage($message, $code = 200)
+    {
+        return $this->successResponse(['data' => $message], $code);
+    }
+}
