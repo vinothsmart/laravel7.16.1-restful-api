@@ -57,8 +57,7 @@ class UserController extends ApiController
             $isAdmin = false;
         }
         $data['password'] = bcrypt($request->password);
-        // $data['image'] = $request->file('image')->store('');
-        $data['image'] = 'default.jpg';
+        $data['image'] = $request->file('image')->store('');
         $data['email_verified_at'] = $isAdmin == true ? now() : null;
         $data['verified'] = $isAdmin == true ? User::VERIFIED_USER : User::UNVERIFIED_USER;
         $data['verification_token'] = $isAdmin == true ? null : User::generateVerificationCode();
