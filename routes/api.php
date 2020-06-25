@@ -32,3 +32,5 @@ Route::resource('roles.users', 'Role\RoleUserController', ['only' => ['index']])
  */
 
 Route::resource('users', 'User\UserController', ['except' => ['create', 'edit']]);
+
+Route::resource('users.roles', 'User\UserRoleController', ['only' => ['index']]);
