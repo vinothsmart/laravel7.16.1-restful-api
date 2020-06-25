@@ -36,3 +36,5 @@ Route::resource('users', 'User\UserController', ['except' => ['create', 'edit']]
 Route::resource('users.roles', 'User\UserRoleController', ['only' => ['index']]);
 
 Route::name('verify')->get('users/verify/{token}', 'User\UserController@verify');
+
+Route::name('resend')->get('users/{user}/resend', 'User\UserController@resend');
