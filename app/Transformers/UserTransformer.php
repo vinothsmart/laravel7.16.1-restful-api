@@ -2,6 +2,7 @@
 
 namespace App\Transformers;
 
+use App\User;
 use League\Fractal\TransformerAbstract;
 
 class UserTransformer extends TransformerAbstract
@@ -14,7 +15,7 @@ class UserTransformer extends TransformerAbstract
     protected $defaultIncludes = [
         //
     ];
-    
+
     /**
      * List of resources possible to include
      *
@@ -23,16 +24,25 @@ class UserTransformer extends TransformerAbstract
     protected $availableIncludes = [
         //
     ];
-    
+
     /**
      * A Fractal transformer.
      *
      * @return array
      */
-    public function transform()
+    public function transform(User $user)
     {
         return [
-            //
+            'userId' => (int) $user->id,
+            'userName' => (string) $user->name,
+            'userEmail' => (string) $user->email,
+            'userEmailVerifiedDate' => (string) $user->email_verified_at,
+            'userProfilePicture' => url("fileuploads/{$user->image}"),
+            'isVerified' => (int) $user->verified,
+            'isAdmin' => ($user->admin === 'true'),
+            'creationDate' => (string) $user->created_at,
+            'lastChange' => (string) $user->updated_at,
+            'deletedDate' => isset($user->deleted_at) ? (string) $user->deleted_at : null,
         ];
     }
 }
