@@ -32,17 +32,30 @@ class UserTransformer extends TransformerAbstract
      */
     public function transform(User $user)
     {
+        $roleId = "";
+        $roleName = "";
+
+        $roles = $user->roles;
+
+        foreach ($roles as $role) {
+            $roleId = $role->id;
+            $roleName = $role->role;
+        }
         return [
             'userId' => (int) $user->id,
             'userName' => (string) $user->name,
             'userEmail' => (string) $user->email,
             'userEmailVerifiedDate' => (string) $user->email_verified_at,
-            'userProfilePicture' => url("fileuploads/{$user->image}"),
+            'userPicture' => url("fileuploads/{$user->image}"),
             'isVerified' => (int) $user->verified,
             'isAdmin' => ($user->admin === 'true'),
             'creationDate' => (string) $user->created_at,
             'lastChange' => (string) $user->updated_at,
             'deletedDate' => isset($user->deleted_at) ? (string) $user->deleted_at : null,
+            'roles' => [
+                'userRoleId' => $roleId,
+                'userRole' => $roleName,
+            ],
         ];
     }
 }
