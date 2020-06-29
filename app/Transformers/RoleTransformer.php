@@ -63,4 +63,17 @@ class RoleTransformer extends TransformerAbstract
 
         return isset($attributes[$index]) ? $attributes[$index] : null;
     }
+
+    public static function transformedAttribute($index)
+    {
+        $attributes = [
+            'id' => 'userRoleId',
+            'role' => 'userRole',
+            'created_at' => 'creationDate',
+            'updated_at' => 'lastChange',
+            'updated_at' => 'deletedDate',
+        ];
+
+        return isset($attributes[$index]) ? $attributes[$index] : null;
+    }
 }

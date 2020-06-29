@@ -26,6 +26,24 @@ class TransfromInput
         // Then going to replace the value
         $request->replace($transformedInput);
 
-        return $next($request);
+        $response = $next($request);
+
+        if (isset($response->exception)) {
+            $data = $response->getData();
+
+            $transformedErrors = [];
+
+            foreach ($data->error as $field => $error) {
+                $transformedField = $transformer::transformedAttribute($field);
+
+                $transformedErrors[$transformedField] = str_replace($field, $transformedField, $error);
+            }
+
+            $data->error = $transformedErrors;
+
+            $response->setData($data);
+        }
+
+        return $response;
     }
 }
