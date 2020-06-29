@@ -4,10 +4,18 @@ namespace App\Http\Controllers\Role;
 
 use App\Http\Controllers\ApiController;
 use App\Role;
+use App\Transformers\RoleTransformer;
 use Illuminate\Http\Request;
 
 class RoleController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('transform.input:' . RoleTransformer::class)->only(['store', 'update']);
+    }
+
     /**
      * Display a listing of the resource.
      *
