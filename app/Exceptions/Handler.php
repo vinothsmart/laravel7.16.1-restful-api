@@ -2,23 +2,23 @@
 
 namespace App\Exceptions;
 
-use Throwable;
 use App\Traits\ApiResponser;
-use Illuminate\Database\QueryException;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
     use ApiResponser;
-    
+
     /**
      * A list of the exception types that are not reported.
      *
@@ -74,7 +74,7 @@ class Handler extends ExceptionHandler
         if ($exception instanceof AuthorizationException) {
             return $this->errorResponse($exception->getMessage(), 403);
         }
-        
+
         if ($exception instanceof NotFoundHttpException) {
             return $this->errorResponse('The specified URL cannot be found', 404);
         }
@@ -82,28 +82,32 @@ class Handler extends ExceptionHandler
         if ($exception instanceof MethodNotAllowedHttpException) {
             return $this->errorResponse('The specified method for the request is invalid', 405);
         }
-        
+
         if ($exception instanceof HttpException) {
             return $this->errorResponse($exception->getMessage(), $exception->getStatusCode());
         }
 
         if ($exception instanceof QueryException) {
+            // dd($exception);
+            if ($exception->errorInfo == null) {
+                return $this->errorResponse('DB connection not made', 409);
+            }
             $errorCode = $exception->errorInfo[1];
 
-            if($errorCode == 1451) {
+            if ($errorCode == 1451) {
                 return $this->errorResponse('Cannot remove this resource permanently. It is realted with any other resource', 409);
             }
         }
-        
-        if($exception instanceof ValidationException){
+
+        if ($exception instanceof ValidationException) {
             return $this->convertValidationExceptionToResponse($exception, $request);
         }
 
-        if($exception instanceof TokenMismatchException){
+        if ($exception instanceof TokenMismatchException) {
             return redirect()->back()->withInput($request->input());
-        } 
+        }
 
-        if(config('app.debug')){
+        if (config('app.debug')) {
             return parent::render($request, $exception);
         }
 
@@ -119,14 +123,13 @@ class Handler extends ExceptionHandler
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-        if($this->isFrontend($request)) {
+        if ($this->isFrontend($request)) {
             return redirect()->guest('login');
-        } 
-        
+        }
+
         return $this->errorResponse('Unauthenticated', 401);
     }
 
-    
     /**
      * Create a response object from the given validation exception.
      *

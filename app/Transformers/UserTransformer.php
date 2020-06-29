@@ -56,6 +56,16 @@ class UserTransformer extends TransformerAbstract
                 'userRoleId' => $roleId,
                 'userRole' => $roleName,
             ],
+            'links' => [
+                [
+                    'rel' => 'self',
+                    'href' => route('users.show', $user->id),
+                ],
+                [
+                    'rel' => 'users.roles',
+                    'href' => route('users.roles.index', $user->id),
+                ],
+            ],
         ];
     }
 

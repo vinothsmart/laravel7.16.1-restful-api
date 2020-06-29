@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
         // Clear the user events
         User::flushEventListeners();
 
-        factory(User::class)->create(['name' => 'Vino', 'email' => 'vino@ab.com', 'password' => '$2y$10$1KeHVDk4jl1LU7psksi9iet369iU7eli4fshl/zXcIxQqKCLMTZSW', 'image' => 'default.jpg', 'verified' => 1, 'admin' => User::ADMIN_USER, 'verification_token' => null]);
+        factory(User::class)->create(['name' => 'Vino', 'email' => 'vino@ab.com', 'password' => '$2y$10$1KeHVDk4jl1LU7psksi9iet369iU7eli4fshl/zXcIxQqKCLMTZSW', 'image' => 'default.jpeg', 'verified' => 1, 'admin' => User::ADMIN_USER, 'verification_token' => null]);
 
         $usersQunatity = 1000;
         factory(User::class, $usersQunatity)->create();
