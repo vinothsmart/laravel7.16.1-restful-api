@@ -51,6 +51,7 @@ class UserTransformer extends TransformerAbstract
             'isAdmin' => ($user->admin === 'true'),
             'creationDate' => (string) $user->created_at,
             'lastChange' => (string) $user->updated_at,
+            'clientDetails' => (string) $user->client_details,
             'deletedDate' => isset($user->deleted_at) ? (string) $user->deleted_at : null,
             'roles' => [
                 'userRoleId' => $roleId,
@@ -85,6 +86,7 @@ class UserTransformer extends TransformerAbstract
             'lastChange' => 'updated_at',
             'deletedDate' => 'deleted_at',
             'userRoleId' => 'role_id',
+            'clientDetails' => 'client_details',
         ];
 
         return isset($attributes[$index]) ? $attributes[$index] : null;
@@ -106,6 +108,7 @@ class UserTransformer extends TransformerAbstract
             'updated_at' => 'lastChange',
             'deleted_at' => 'deletedDate',
             'role_id' => 'userRoleId',
+            'client_details' => 'clientDetails',
         ];
 
         return isset($attributes[$index]) ? $attributes[$index] : null;

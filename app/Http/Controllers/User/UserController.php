@@ -65,8 +65,7 @@ class UserController extends ApiController
         $data['verified'] = $isAdmin == true ? User::VERIFIED_USER : User::UNVERIFIED_USER;
         $data['verification_token'] = $isAdmin == true ? null : User::generateVerificationCode();
         $data['admin'] = $isAdmin == true ? User::ADMIN_USER : User::REGULAR_USER;
-        // $data['client_details'] = $this->applicationDetector();
-        $data['client_details'] = null;
+        $data['client_details'] = $this->applicationDetector();
 
         $user = User::create($data);
 
@@ -156,8 +155,7 @@ class UserController extends ApiController
         }
 
         // Getting Client Details
-        // $user->client_details = $this->applicationDetector();
-        $user->client_details = null;
+        $user->client_details = $this->applicationDetector();
 
         $user->save();
 

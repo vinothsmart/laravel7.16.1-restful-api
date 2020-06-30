@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Jenssegers\Agent\Agent;
 
 trait ApiResponser
 {
@@ -133,5 +134,25 @@ trait ApiResponser
         return Cache::remember($fullUrl, Carbon::now()->addMinutes(5), function () use ($data) {
             return $data;
         });
+    }
+
+    protected function applicationDetector()
+    {
+        $agent = new Agent();
+        $platform = $agent->platform();
+        $browser = $agent->browser();
+        $version = $agent->version($platform);
+        $device = $agent->device();
+
+        $clientDetials = array(
+            'UserId' => '',
+            'UserName' => '',
+            'Date' => date('Y-m-d G:i:s'),
+            'Os' => $platform,
+            'OsVersion' => $version,
+            'Browser' => $browser,
+            'Device' => $device,
+        );
+        return json_encode($clientDetials);
     }
 }
