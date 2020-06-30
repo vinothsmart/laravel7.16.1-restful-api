@@ -96,13 +96,16 @@ class UserTransformer extends TransformerAbstract
             'id' => 'userId',
             'name' => 'userName',
             'email' => 'userEmail',
+            'password' => 'password',
+            'password_confirmation' => 'password_confirmation',
             'email_verified_at' => 'userEmailVerifiedDate',
             'image' => 'image',
             'verified' => 'isVerified',
             'admin' => 'isAdmin',
             'created_at' => 'creationDate',
             'updated_at' => 'lastChange',
-            'updated_at' => 'deletedDate',
+            'deleted_at' => 'deletedDate',
+            'role_id' => 'userRoleId',
         ];
 
         return isset($attributes[$index]) ? $attributes[$index] : null;
