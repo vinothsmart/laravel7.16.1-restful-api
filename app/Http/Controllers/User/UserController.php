@@ -38,6 +38,7 @@ class UserController extends ApiController
      */
     public function store(Request $request)
     {
+        // Checking the Revert Commit
         // Validation
         $rules = [
             'name' => 'required',
