@@ -37,19 +37,9 @@ return [
 
     'connections' => [
 
-        // 'main' => [
-        //     'salt' => 'your-salt-string',
-        //     'length' => 'your-length-integer',
-        // ],
-
-        // 'alternative' => [
-        //     'salt' => 'your-salt-string',
-        //     'length' => 'your-length-integer',
-        // ],
-
         \App\User::class => [
-            'salt' => \App\User::class . '7623e9b0009feff8e024a689d6ef59ce',
-            'length' => 5,
+            'salt' => \App\User::class . env('APP_NAME'),
+            'length' => 10,
         ],
 
     ],
