@@ -37,7 +37,6 @@ class RoleTransformer extends TransformerAbstract
             'userRole' => (string) $role->role,
             'creationDate' => (string) $role->created_at,
             'lastChange' => (string) $role->updated_at,
-            'clientDetails' => (string) $role->client_details,
             'deletedDate' => isset($role->deleted_at) ? (string) $role->deleted_at : null,
             'links' => [
                 [
@@ -60,7 +59,6 @@ class RoleTransformer extends TransformerAbstract
             'creationDate' => 'created_at',
             'lastChange' => 'updated_at',
             'deletedDate' => 'deleted_at',
-            'clientDetails' => 'client_details',
         ];
 
         return isset($attributes[$index]) ? $attributes[$index] : null;
@@ -74,7 +72,6 @@ class RoleTransformer extends TransformerAbstract
             'created_at' => 'creationDate',
             'updated_at' => 'lastChange',
             'updated_at' => 'deletedDate',
-            'client_details' => 'clientDetails',
         ];
 
         return isset($attributes[$index]) ? $attributes[$index] : null;
