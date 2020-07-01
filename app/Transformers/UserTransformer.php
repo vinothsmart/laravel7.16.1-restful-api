@@ -42,7 +42,7 @@ class UserTransformer extends TransformerAbstract
             $roleName = $role->role;
         }
         return [
-            'userId' => (int) $user->id,
+            'userId' => (string) \Hashids::connection(\App\User::class)->encode($user->id),
             'userName' => (string) $user->name,
             'userEmail' => (string) $user->email,
             'userEmailVerifiedDate' => (string) $user->email_verified_at,
@@ -59,11 +59,11 @@ class UserTransformer extends TransformerAbstract
             'links' => [
                 [
                     'rel' => 'self',
-                    'href' => route('users.show', $user->id),
+                    'href' => route('users.show', \Hashids::connection(\App\User::class)->encode($user->id)),
                 ],
                 [
                     'rel' => 'users.roles',
-                    'href' => route('users.roles.index', $user->id),
+                    'href' => route('users.roles.index', \Hashids::connection(\App\User::class)->encode($user->id)),
                 ],
             ],
         ];
