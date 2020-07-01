@@ -52,8 +52,15 @@ class UserController extends ApiController
 
         $data = $request->all();
 
-        // Role based cond
-        $roleId = $request->role_id;
+        /**
+         * Role based condition
+         */
+        // Here we get hashids
+        $encryptedRoleId = $request->role_id;
+
+        // Decrypyt Role Id
+        $decryptedRoleId = \Hashids::connection(\App\Role::class)->decode($encryptedRoleId);
+        $roleId = $decryptedRoleId[0];
 
         if ($roleId == 1 || $roleId == 2) {
             $isAdmin = true;
@@ -72,7 +79,7 @@ class UserController extends ApiController
         $user = User::create($data);
 
         // Adding to Pivot Table
-        $userRoleAssign = ['role_id' => $request->role_id, 'user_id' => $user->id];
+        $userRoleAssign = ['role_id' => $roleId, 'user_id' => $user->id];
 
         DB::table('role_user')
             ->insert($userRoleAssign);
