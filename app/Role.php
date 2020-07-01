@@ -2,13 +2,14 @@
 
 namespace App;
 
+use App\Traits\Hashidable;
 use App\Transformers\RoleTransformer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Role extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Hashidable;
 
     protected $dates = ['deleted_at'];
 
