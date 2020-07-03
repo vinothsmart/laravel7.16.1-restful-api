@@ -177,12 +177,12 @@ class UserController extends ApiController
                 ->update($userRoleAssign);
         }
 
+        // Getting Client Details
+        $user->client_details = $this->applicationDetector();
+
         if (!$user->isDirty()) {
             return $this->errorResponse('You need to specify a different value to update', 422);
         }
-
-        // Getting Client Details
-        $user->client_details = $this->applicationDetector();
 
         $user->save();
 
