@@ -38,8 +38,9 @@ class UserController extends ApiController
      */
     public function store(Request $request)
     {
-        // Checking the Revert Commit
-        // Validation
+        /**
+         * Validation
+         */
         $rules = [
             'name' => 'required',
             'email' => 'required|email|unique:users',
@@ -73,8 +74,7 @@ class UserController extends ApiController
         $data['verified'] = $isAdmin == true ? User::VERIFIED_USER : User::UNVERIFIED_USER;
         $data['verification_token'] = $isAdmin == true ? null : User::generateVerificationCode();
         $data['admin'] = $isAdmin == true ? User::ADMIN_USER : User::REGULAR_USER;
-        // $data['client_details'] = $this->applicationDetector();
-        $data['client_details'] = null;
+        $data['client_details'] = $this->applicationDetector();
 
         $user = User::create($data);
 
@@ -109,8 +109,14 @@ class UserController extends ApiController
      */
     public function update(Request $request, User $user)
     {
-        // Validation
-        $rules = ['email' => 'email|unique:users,email,' . $user->id, 'password' => 'min:6|confirmed', 'admin' => 'in:' . User::ADMIN_USER . ',' . User::REGULAR_USER];
+        /**
+         * Validation
+         */
+        $rules = [
+            'email' => 'email|unique:users,email,' . $user->id,
+            'password' => 'min:6|confirmed',
+            'admin' => 'in:' . User::ADMIN_USER . ',' . User::REGULAR_USER,
+        ];
 
         $this->validate($request, $rules);
 
