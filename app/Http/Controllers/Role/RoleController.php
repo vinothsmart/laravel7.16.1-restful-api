@@ -56,8 +56,7 @@ class RoleController extends ApiController
 
         $data = $request->all();
         $data['role'] = $request->role;
-        // $data['client_details'] = $this->applicationDetector();
-        $data['client_details'] = null;
+        $data['client_details'] = $this->applicationDetector();
 
         $role = Role::create($data);
 
@@ -99,8 +98,7 @@ class RoleController extends ApiController
             return $this->errorResponse('You need to specify a different value to update', 422);
         }
 
-        // $role->client_details = $this->applicationDetector();
-        $role->client_details = null;
+        $role->client_details = $this->applicationDetector();
 
         $role->save();
 

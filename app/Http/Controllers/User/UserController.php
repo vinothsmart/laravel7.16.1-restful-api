@@ -123,12 +123,17 @@ class UserController extends ApiController
         /**
          * Role based condition
          */
-        // Here we get hashids
-        $encryptedRoleId = $request->role_id;
+        if ($request->has('role_id')) {
+            // Here we get hashids
+            $encryptedRoleId = $request->role_id;
 
-        // Decrypyt Role Id
-        $decryptedRoleId = \Hashids::connection(\App\Role::class)->decode($encryptedRoleId);
-        $roleId = $decryptedRoleId[0];
+            // Decrypyt Role Id
+            $decryptedRoleId = \Hashids::connection(\App\Role::class)->decode($encryptedRoleId);
+            $roleId = $decryptedRoleId[0];
+        } else {
+            $roleOfuser = DB::table('role_user')->where('user_id', $user->id)->first();
+            $roleId = $roleOfuser->role_id;
+        }
 
         if ($roleId == 1 || $roleId == 2) {
             $isAdmin = true;
@@ -177,8 +182,7 @@ class UserController extends ApiController
         }
 
         // Getting Client Details
-        // $user->client_details = $this->applicationDetector();
-        $user->client_details = null;
+        $user->client_details = $this->applicationDetector();
 
         $user->save();
 
