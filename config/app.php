@@ -168,6 +168,7 @@ return [
          */
         Spatie\Fractal\FractalServiceProvider::class,
         Vinkla\Hashids\HashidsServiceProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
 
         /*
          * Application Service Providers...
