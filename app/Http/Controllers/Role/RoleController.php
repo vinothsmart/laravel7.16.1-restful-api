@@ -13,9 +13,9 @@ class RoleController extends ApiController
     {
         parent::__construct();
 
-        $this->middleware('client.credentials')->only(['index', 'show']);
-
         $this->middleware('transform.input:' . RoleTransformer::class)->only(['store', 'update']);
+
+        $this->middleware('client.credentials')->only(['index', 'show']);
     }
 
     /**
