@@ -16,6 +16,8 @@ class RoleController extends ApiController
         $this->middleware('transform.input:' . RoleTransformer::class)->only(['store', 'update']);
 
         $this->middleware('client.credentials')->only(['index', 'show']);
+
+        $this->middleware('auth:api')->only(['index', 'show']);
     }
 
     /**
