@@ -35,7 +35,6 @@ class AuthServiceProvider extends ServiceProvider
             'add-user' => 'Create a new user for a specific role',
             'list-roles' => 'List all roles',
             'manage-role' => 'Create, read, update and delete roles (CRUD)',
-            'manage-user' => 'Create, read, update and delete users (CRUD)',
             'manage-account' => 'Read your account data, id, name, email, if verified and if admin (cannot read password). Modify your account data(email and password)',
             'read-general' => 'Read general information like getting roles, listed users',
         ]);

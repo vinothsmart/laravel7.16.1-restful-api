@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Role;
 use App\Http\Controllers\ApiController;
 use App\Role;
 use App\Transformers\RoleTransformer;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 
 class RoleController extends ApiController
@@ -19,7 +20,7 @@ class RoleController extends ApiController
 
         $this->middleware('auth:api')->only(['index', 'show']);
 
-        $this->middleware('scope:manage-role');
+        $this->middleware('scope:manage-role')->except(['index']);
     }
 
     /**
@@ -29,9 +30,13 @@ class RoleController extends ApiController
      */
     public function index()
     {
-        $roles = Role::all();
+        if (request()->user()->tokenCan('read-general') || request()->user()->tokenCan('manage-role')) {
+            $roles = Role::all();
 
-        return $this->showAll($roles);
+            return $this->showAll($roles);
+        }
+
+        throw new AuthorizationException('Invalid scope(s)');
     }
 
     /**
