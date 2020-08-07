@@ -22,6 +22,8 @@ class UserController extends ApiController
         $this->middleware('auth:api')->except(['store', 'verify', 'resend']);
 
         $this->middleware('client.credentials')->only(['index', 'show']);
+
+        $this->middleware('scope:manage-user');
     }
     /**
      * Display a listing of the resource.

@@ -10,6 +10,8 @@ class RoleUserController extends ApiController
     public function __construct()
     {
         $this->middleware('client.credentials')->only(['index']);
+
+        $this->middleware('scope:list-roles')->only(['index']);
     }
 
     /**
