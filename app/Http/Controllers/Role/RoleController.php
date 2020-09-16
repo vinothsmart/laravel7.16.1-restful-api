@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Role;
 use App\Http\Controllers\ApiController;
 use App\Role;
 use App\Transformers\RoleTransformer;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 
 class RoleController extends ApiController
@@ -16,11 +15,11 @@ class RoleController extends ApiController
 
         $this->middleware('transform.input:' . RoleTransformer::class)->only(['store', 'update']);
 
-        $this->middleware('client.credentials')->only(['index', 'show']);
+        // $this->middleware('client.credentials')->only(['index', 'show']);
 
-        $this->middleware('auth:api')->only(['index', 'show']);
+        // $this->middleware('auth:api')->only(['index', 'show']);
 
-        $this->middleware('scope:manage-role')->except(['index']);
+        // $this->middleware('scope:manage-role')->except(['index']);
     }
 
     /**
@@ -30,13 +29,17 @@ class RoleController extends ApiController
      */
     public function index()
     {
-        if (request()->user()->tokenCan('read-general') || request()->user()->tokenCan('manage-role')) {
-            $roles = Role::all();
+        // if (request()->user()->tokenCan('read-general') || request()->user()->tokenCan('manage-role')) {
+        //     $roles = Role::all();
 
-            return $this->showAll($roles);
-        }
+        //     return $this->showAll($roles);
+        // }
 
-        throw new AuthorizationException('Invalid scope(s)');
+        // throw new AuthorizationException('Invalid scope(s)');
+
+        $roles = Role::all();
+
+        return $this->showAll($roles);
     }
 
     /**
@@ -47,7 +50,12 @@ class RoleController extends ApiController
     function list() {
         $roles = Role::select('id', 'role')->get();
 
-        return $this->showList($roles);
+        foreach ($roles as $role) {
+            $roles = $role->id;
+        }
+        // $roles->id = \Hashids::connection(\App\Role::class)->encode($roles->id);
+
+        return $roles;
     }
 
     /**
