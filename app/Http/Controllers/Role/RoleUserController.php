@@ -13,7 +13,7 @@ class RoleUserController extends ApiController
 
         $this->middleware('scope:read-general')->only(['index']);
 
-        $this->middleware('can:view,role')->only(['index']);
+        // $this->middleware('can:view,role')->only(['index']);
     }
 
     /**

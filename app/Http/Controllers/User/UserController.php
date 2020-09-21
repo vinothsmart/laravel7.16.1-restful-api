@@ -25,7 +25,7 @@ class UserController extends ApiController
 
         $this->middleware('scope:manage-account')->except(['show', 'update']);
 
-        $this->middleware('can:create,role')->only(['store']);
+        // $this->middleware('can:create,role')->only(['store']);
     }
     /**
      * Display a listing of the resource.

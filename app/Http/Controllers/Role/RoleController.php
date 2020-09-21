@@ -21,7 +21,7 @@ class RoleController extends ApiController
 
         // $this->middleware('scope:manage-role')->except(['index']);
 
-        $this->middleware('can:view,role')->only(['show']);
+        // $this->middleware('can:view,role')->only(['show']);
     }
 
     /**
