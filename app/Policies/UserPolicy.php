@@ -27,9 +27,9 @@ class UserPolicy
      * @param  \App\User  $model
      * @return mixed
      */
-    public function view(User $user, User $model)
+    public function view(User $authenticatedUser, User $user)
     {
-        //
+        return $authenticatedUser->id === $user->id;
     }
 
     /**
@@ -50,9 +50,9 @@ class UserPolicy
      * @param  \App\User  $model
      * @return mixed
      */
-    public function update(User $user, User $model)
+    public function update(User $authenticatedUser, User $user)
     {
-        //
+        return $authenticatedUser->id === $user->id;
     }
 
     /**
@@ -62,9 +62,9 @@ class UserPolicy
      * @param  \App\User  $model
      * @return mixed
      */
-    public function delete(User $user, User $model)
+    public function delete(User $authenticatedUser, User $user)
     {
-        //
+        return $authenticatedUser->id === $user->id && $authenticatedUser->token()->client->personal_access_client;
     }
 
     /**
