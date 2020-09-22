@@ -3,12 +3,13 @@
 namespace App\Policies;
 
 use App\Role;
+use App\Traits\AdminActions;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class RolePolicy
 {
-    use HandlesAuthorization;
+    use HandlesAuthorization, AdminActions;
 
     /**
      * Determine whether the user can view any models.

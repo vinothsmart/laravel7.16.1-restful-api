@@ -23,7 +23,7 @@ class UserController extends ApiController
 
         $this->middleware('client.credentials')->only(['index', 'show']);
 
-        $this->middleware('scope:manage-account')->except(['show', 'update']);
+        // $this->middleware('scope:manage-account')->except(['show', 'update']);
 
         $this->middleware('can:view,user')->only(['show']);
         $this->middleware('can:update,user')->only(['update']);
