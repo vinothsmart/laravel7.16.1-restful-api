@@ -58,7 +58,7 @@ class UserController extends ApiController
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|confirmed',
             'role_id' => 'required',
-            'image' => 'required',
+            // 'image' => 'required',
         ];
 
         $this->validate($request, $rules);
@@ -81,7 +81,13 @@ class UserController extends ApiController
             $isAdmin = false;
         }
         $data['password'] = bcrypt($request->password);
-        $data['image'] = $request->file('image')->store('');
+
+        if ($request->file('image') == null) {
+            $data['image'] = "";
+        } else {
+            $data['image'] = $request->file('image')->store('');
+        }
+
         $data['email_verified_at'] = $isAdmin == true ? now() : null;
         $data['verified'] = $isAdmin == true ? User::VERIFIED_USER : User::UNVERIFIED_USER;
         $data['verification_token'] = $isAdmin == true ? null : User::generateVerificationCode();
