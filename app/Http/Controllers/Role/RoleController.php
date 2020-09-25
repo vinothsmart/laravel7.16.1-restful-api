@@ -51,17 +51,7 @@ class RoleController extends ApiController
      */
     function list() {
         $roles = Role::select('id', 'role')->get();
-
-        foreach ($roles as $role) {
-            $roleList[] = [
-                "id" => \Hashids::connection(\App\Role::class)->encode($role->id),
-                "role" => $role->role,
-            ];
-        }
-
-        return [
-            "data" => $roleList,
-        ];
+        return $this->showList($roles, "userRoleId", "userRole", \App\Role::class);
     }
 
     /**

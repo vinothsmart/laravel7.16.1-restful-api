@@ -50,13 +50,16 @@ trait ApiResponser
         return $this->successResponse($model, $code);
     }
 
-    protected function showList(Collection $collection, $code = 200)
+    protected function showList(Collection $collection, $transformId, $transformName, $hashingModel, $code = 200)
     {
-        $transformer = $collection->first()->transformer;
-
-        $collection = $this->transformData($collection, $transformer);
-
-        return $this->successResponse($collection, $code);
+        foreach ($collection as $collect) {
+            $collectist[] = [
+                $transformId => \Hashids::connection($hashingModel)->encode($collect->id),
+                $transformName => $collect->role,
+            ];
+        }
+        $data = ["data" => $collectist];
+        return $this->successResponse($data, $code);
     }
 
     protected function showMessage($message, $code = 200)
