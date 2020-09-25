@@ -83,7 +83,7 @@ class UserController extends ApiController
         $data['password'] = bcrypt($request->password);
 
         if ($request->file('image') == null) {
-            $data['image'] = "";
+            $data['image'] = "default.jpeg";
         } else {
             $data['image'] = $request->file('image')->store('');
         }
