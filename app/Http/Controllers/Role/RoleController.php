@@ -15,9 +15,9 @@ class RoleController extends ApiController
 
         $this->middleware('transform.input:' . RoleTransformer::class)->only(['store', 'update']);
 
-        // $this->middleware('client.credentials')->only(['index', 'show']);
+        $this->middleware('client.credentials')->only(['index', 'show', 'list']);
 
-        // $this->middleware('auth:api')->only(['index', 'show']);
+        $this->middleware('auth:api')->only(['index', 'show']);
 
         // $this->middleware('scope:manage-role')->except(['index']);
 
@@ -49,7 +49,7 @@ class RoleController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    function list() {
+    function list(Role $role) {
         $roles = Role::select('id', 'role')->get();
         return $this->showList($roles, "userRoleId", "userRole", \App\Role::class);
     }
