@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Str;
 
+// Configuration for cleardb
 $url = parse_url(getenv("CLEARDB_DATABASE_URL"));
 
 $host = $url["host"];
@@ -21,6 +22,8 @@ return [
     | you may use many connections at once using the Database library.
     |
      */
+
+    // 'default' => env('DB_CONNECTION', 'mysql'),
 
     'default' => env('DB_CONNECTION', 'your_heroku_mysql_connection'),
 
@@ -48,8 +51,8 @@ return [
             'database' => $database,
             'username' => $username,
             'password' => $password,
-            'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
         ),
 
